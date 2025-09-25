@@ -1,31 +1,34 @@
-# GalvanAI - Full-Stack Authentication System
+# GalvanAI – Full-Stack Authentication System
 
-A full-stack application featuring a role-based authentication system with a Flask backend and a Next.js frontend.
+A full-stack application that pairs a Flask REST API with a Next.js front-end to provide a role-based (Super Admin / User) authentication system secured with JWTs and email-OTP verification.
+
+---
 
 ## 🔑 Default Super Admin Login
 
--   **Email**: `admin@galvanai.com`
--   **Password**: `Admin@123456`
+| Email                    | Password      |
+| ------------------------ | ------------- |
+| `admin@galvanai.com` | `Admin@123456` |
 
 ---
 
 ## ✨ Features
 
--   **User Authentication**: Secure Login & Registration with email/password.
--   **OTP Verification**: Email-based One-Time Password verification for new users.
--   **Token Management**: Uses JWT for secure access and refresh tokens.
--   **Role-Based Access**:
-    -   **Super Admin**: Pre-defined credentials, can manage all users.
-    -   **User**: Can log in and access their own dashboard.
--   **Admin Dashboard**: A clean UI for the Super Admin to View, Create, Edit, and Delete users.
+* **User Authentication** – secure registration & login with email / password  
+* **OTP Verification** – email-based one-time password for new-user confirmation  
+* **Token Management** – JWT access and refresh tokens  
+* **Role-Based Access**  
+  * **Super Admin** – predefined credentials, full user management  
+  * **User** – personal dashboard access only  
+* **Admin Dashboard** – clean UI to **View ∙ Create ∙ Edit ∙ Delete** users  
 
 ---
 
 ## 🛠️ Tech Stack
 
--   **Backend**: Python, Flask, Flask-RESTX, SQLAlchemy, Flask-Migrate, PyJWT, Flask-Mail
--   **Frontend**: Next.js, React, TypeScript, Tailwind CSS, shadcn/ui, Axios, Zod
--   **Database**: SQLite
+* **Backend** – Python, Flask, Flask-RESTX, SQLAlchemy, Flask-Migrate, PyJWT, Flask-Mail  
+* **Frontend** – Next.js, React, TypeScript, Tailwind CSS, shadcn/ui, Axios, Zod  
+* **Database** – SQLite  
 
 ---
 
@@ -43,119 +46,119 @@ A full-stack application featuring a role-based authentication system with a Fla
 
 ## 🚀 Getting Started
 
-Follow these instructions to get the project running on your local machine.
+Follow these steps to run the project locally.
 
 ### Prerequisites
 
--   **Python** (3.8 or newer)
--   **Node.js** (v18 or newer) & **npm**
--   **Git**
+* **Python** 3.8 +  
+* **Node.js** 18 + (includes **npm**)  
+* **Git**
 
-### 1. Clone the Repository
+---
+
+### 1 ▪ Clone the repository
 
 ```bash
-git clone [https://github.com/your-username/galvanai-auth-system.git](https://github.com/your-username/galvanai-auth-system.git)
+git clone https://github.com/Uzair-G-Shah/galvanai-auth-system.git
 cd galvanai-auth-system
-2. Backend Setup (Flask)
-Navigate to the backend directory:
+2 ▪ Backend Setup (Flask)
+All backend commands are executed from the project root (galvanai-auth-system).
 
-Bash
+2.1 Create a virtual environment
+bash
+
+# Windows
+python -m venv backend\venv
+backend\venv\Scripts\activate
+
+# macOS / Linux
+python3 -m venv backend/venv
+source backend/venv/bin/activate
+The prompt should now display (venv).
+
+2.2 Install dependencies
+bash
+
+pip install Flask Flask-RESTX Flask-SQLAlchemy Flask-Migrate \
+            Flask-Bcrypt PyJWT python-dotenv Flask-CORS \
+            Pillow flask-mail
+2.3 Configure environment variables
+bash
 
 cd backend
-Create and activate a virtual environment:
+# Windows
+copy .env.example .env
+# macOS / Linux
+cp .env.example .env
+Open .env and fill in the values exactly in this structure:
 
-On Windows:
-
-Bash
-
-python -m venv venv
-.\venv\Scripts\activate
-On macOS/Linux:
-
-Bash
-
-python3 -m venv venv
-source venv/bin/activate
-Install dependencies from the requirements file:
-
-Bash
-
-pip install -r requirements.txt
-Set up environment variables:
-
-In the backend folder, copy the example file:
-
-On Windows: copy .env.example .env
-
-On macOS/Linux: cp .env.example .env
-
-Open the new .env file and fill in your values. It should look like this:
-
-Ini, TOML
+ini
 
 SECRET_KEY=your-secret-key-here-change-this-in-production
 JWT_SECRET_KEY=your-jwt-secret-key-here-change-this
 DATABASE_URL=sqlite:///app.db
+
 MAIL_SERVER=smtp.gmail.com
 MAIL_PORT=587
 MAIL_USE_TLS=True
 MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=your-app-specific-password
 MAIL_DEFAULT_SENDER=your-email@gmail.com
+
 UPLOAD_FOLDER=uploads
 MAX_CONTENT_LENGTH=16777216
+
 SUPER_ADMIN_EMAIL=admin@galvanai.com
 SUPER_ADMIN_PASSWORD=Admin@123456
 SUPER_ADMIN_FIRST_NAME=Super
 SUPER_ADMIN_LAST_NAME=Admin
-How to Get Your Secret Keys & Credentials
-SECRET_KEY & JWT_SECRET_KEY: Generate these in your terminal. With your virtual environment active, run python, then enter:
+Generate secure keys inside the activated venv:
 
-```python
-import secrets
-secrets.token_hex(24)
-```
-Copy the output and paste it as the value. Do this twice, once for each key.
-MAIL_PASSWORD: This must be a Gmail App Password, not your regular password.
+python
 
-1.  Go to your Google Account -\> Security.
-2.  Enable **2-Step Verification**.
-3.  Go to **App Passwords**, generate a new one for "Mail" on "Other".
-4.  Copy the **16-digit code** and paste it as the value for `MAIL_PASSWORD`.
-Initialize the database and create the admin:
+Run
 
-Bash
+python - << "PY"
+import secrets, textwrap
+print(textwrap.dedent(f'''
+SECRET_KEY      = {secrets.token_hex(24)}
+JWT_SECRET_KEY  = {secrets.token_hex(24)}
+'''))
+PY
+Use each printed value for its respective key.
+
+MAIL_PASSWORD must be a Gmail App Password (enable 2-Step Verification → create App Password).
+
+Return to the project root:
+
+bash
+
+cd ..
+2.4 Initialise database & create Super Admin
+bash
 
 flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade
 flask create-super-admin
-(Note: flask db init is only needed the very first time.)
+2.5 Run the backend server
+bash
 
-Run the backend server:
+flask run --host 0.0.0.0 --port 5000 --debug
+API is now live at http://localhost:5000.
 
-Bash
+3 ▪ Frontend Setup (Next.js)
+Open a new terminal window:
 
-flask run --host=0.0.0.0 --port=5000 --debug
-The backend API will be running at http://localhost:5000.
-
-3. Frontend Setup (Next.js)
-Open a new terminal and navigate to the frontend directory from the project root:
-
-Bash
+bash
 
 cd frontend
-Install dependencies:
-
-Bash
-
 npm install
-Run the frontend server:
-
-Bash
-
 npm run dev
-The application will be accessible at http://localhost:3000.
+Frontend is served at http://localhost:3000.
 
+You now have:
 
-***
+Backend – http://localhost:5000
+Frontend – http://localhost:3000
+
