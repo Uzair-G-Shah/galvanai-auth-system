@@ -68,32 +68,31 @@ cd galvanai-auth-system
 All backend commands are executed from the project root (galvanai-auth-system).  if root folder is causing problem change the nam e of the root folder to GalvanAi 
 
 
-```bash
-2.1 Create a virtual environment
 
-```
+- 2.1 Create a virtual environment
+
+
 
 
 # Windows
 
 ```bash
 python -m venv backend\venv
-backend\venv\Scripts\activate
+.\backend\venv\Scripts\activate
 ```
 # macOS / Linux
 
 ```bash
 python3 -m venv backend/venv
-\backend\venv\Scripts\Activate
+.\backend\venv\Scripts\Activate
 ```
 e.g :  E:\GalvanAi> .\backend\venv\Scripts\Activate
+
 The prompt should now display (venv).
 
 
 2.2 Install dependencies
 ```bash
-# On Windows: venv\Scripts\activate
-# On Mac/Linux: source venv/bin/activate
 pip install Flask Flask-RESTX Flask-SQLAlchemy Flask-Migrate Flask-Bcrypt PyJWT python-dotenv Flask-CORS Pillow flask-mail
 ```
 
@@ -109,51 +108,56 @@ copy .env.example .env
 cp .env.example .env
 
 ```
-- Environment variables Should look like this : 
+Environment variables Should look like this : 
 
-SECRET_KEY=your-secret-key-here-change-this-in-production
-JWT_SECRET_KEY=your-jwt-secret-key-here-change-this
-DATABASE_URL=sqlite:///app.db
+- SECRET_KEY=your-secret-key-here-change-this-in-production
+- JWT_SECRET_KEY=your-jwt-secret-key-here-change-this
+- DATABASE_URL=sqlite:///app.db
 
-MAIL_SERVER=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USE_TLS=True
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-app-specific-password
-MAIL_DEFAULT_SENDER=your-email@gmail.com
+- MAIL_SERVER=smtp.gmail.com
+- MAIL_PORT=587
+- MAIL_USE_TLS=True
+- MAIL_USERNAME=your-email@gmail.com
+- MAIL_PASSWORD=your-app-specific-password
+- MAIL_DEFAULT_SENDER=your-email@gmail.com
 
 UPLOAD_FOLDER=uploads
 MAX_CONTENT_LENGTH=16777216
 
-SUPER_ADMIN_EMAIL=admin@galvanai.com
-SUPER_ADMIN_PASSWORD=Admin@123456
-SUPER_ADMIN_FIRST_NAME=Super
-SUPER_ADMIN_LAST_NAME=Admin
-Generate secure keys inside the activated venv:
+- SUPER_ADMIN_EMAIL=admin@galvanai.com
+- SUPER_ADMIN_PASSWORD=Admin@123456
+- SUPER_ADMIN_FIRST_NAME=Super
+- SUPER_ADMIN_LAST_NAME=Admin
+- Generate secure keys inside the activated venv:
 
+
+# Python backend 
+
+
+Generate a hex keys for ,
+- SECRET_KEY=your-secret-key-here-change-this-in-production
+- JWT_SECRET_KEY=your-jwt-secret-key-here-change-this
+
+Powershell command :
 ```bash
-Python backend 
-
-
-Generate a hex keys for (SECRET_KEY=your-secret-key-here-change-this-in-production
-JWT_SECRET_KEY=your-jwt-secret-key-here-change-this) :
-
-powershell command 
 python -c "import secrets; print(secrets.token_hex(32))"
-
-powershell
+```
+Powershell command :
+```bash
 python -c "import secrets; print(secrets.token_urlsafe(32))"
-
+```
 
 Set them as environment variables in the current venv PowerShell session
 Replace the sample outputs below with the strings the Python commands produced:
 
-powershell
+
 $env:SECRET_KEY = "PASTE_FIRST_GENERATED_KEY_HERE"
 $env:JWT_SECRET_KEY = "PASTE_SECOND_GENERATED_KEY_HERE"
+
 Verify:
 
-powershell
+Powershell command :
+```bash
 echo $env:SECRET_KEY
 echo $env:JWT_SECRET_KEY
  
@@ -165,10 +169,10 @@ MAIL_PASSWORD must be a Gmail App Password (enable 2-Step Verification → creat
 
 Return to the project and add it in the .env folder of backend e.g : MAIL_PASSWORD= 16_digit pass key
 
-```bash
+
 
 2.4 Initialise database & create Super Admin
-
+```bash
 flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade
