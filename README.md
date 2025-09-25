@@ -50,8 +50,9 @@ Follow these steps to run the project locally.
 
 ### Prerequisites
 
-* **Python** 3.8 +  
-* **Node.js** 18 + (includes **npm**)  
+* **Python**  
+* **Next.js** 
+* (includes **npm**)  
 * **Git**
 
 ---
