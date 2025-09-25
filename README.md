@@ -183,9 +183,10 @@ flask create-super-admin
 
 ```bash
 flask run --host 0.0.0.0 --port 5000 --debug
-API is now live at http://localhost:5000.
+
 
 ```
+(Note :API is now live at http://localhost:5000.)
 
 3 ▪ Frontend Setup (Next.js)
 Open a new terminal window:
