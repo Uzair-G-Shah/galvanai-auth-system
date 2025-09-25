@@ -61,38 +61,55 @@ Follow these steps to run the project locally.
 ```bash
 git clone https://github.com/Uzair-G-Shah/galvanai-auth-system.git
 cd galvanai-auth-system
-2 ▪ Backend Setup (Flask)
-All backend commands are executed from the project root (galvanai-auth-system).
 
+```
+
+2 ▪ Backend Setup (Flask)
+All backend commands are executed from the project root (galvanai-auth-system).  if root folder is causing problem change the nam e of the root folder to GalvanAi 
+
+
+```bash
 2.1 Create a virtual environment
-bash
+
+```
+
 
 # Windows
+
+```bash
 python -m venv backend\venv
 backend\venv\Scripts\activate
-
+```
 # macOS / Linux
+
+```bash
 python3 -m venv backend/venv
-source backend/venv/bin/activate
+\backend\venv\Scripts\Activate
+```
+e.g :  E:\GalvanAi> .\backend\venv\Scripts\Activate
 The prompt should now display (venv).
 
-2.2 Install dependencies
-bash
 
-pip install Flask Flask-RESTX Flask-SQLAlchemy Flask-Migrate \
-            Flask-Bcrypt PyJWT python-dotenv Flask-CORS \
-            Pillow flask-mail
+2.2 Install dependencies
+```bash
+# On Windows: venv\Scripts\activate
+# On Mac/Linux: source venv/bin/activate
+pip install Flask Flask-RESTX Flask-SQLAlchemy Flask-Migrate Flask-Bcrypt PyJWT python-dotenv Flask-CORS Pillow flask-mail
+```
+
+
 2.3 Configure environment variables
-bash
+- Copy you .env.example to the .env file and fill it with the required things 
+```bash
 
 cd backend
 # Windows
 copy .env.example .env
 # macOS / Linux
 cp .env.example .env
-Open .env and fill in the values exactly in this structure:
 
-ini
+```
+- Environment variables Should look like this : 
 
 SECRET_KEY=your-secret-key-here-change-this-in-production
 JWT_SECRET_KEY=your-jwt-secret-key-here-change-this
@@ -114,47 +131,68 @@ SUPER_ADMIN_FIRST_NAME=Super
 SUPER_ADMIN_LAST_NAME=Admin
 Generate secure keys inside the activated venv:
 
-python
+```bash
+Python backend 
 
-Run
 
-python - << "PY"
-import secrets, textwrap
-print(textwrap.dedent(f'''
-SECRET_KEY      = {secrets.token_hex(24)}
-JWT_SECRET_KEY  = {secrets.token_hex(24)}
-'''))
-PY
-Use each printed value for its respective key.
+Generate a hex keys for (SECRET_KEY=your-secret-key-here-change-this-in-production
+JWT_SECRET_KEY=your-jwt-secret-key-here-change-this) :
 
+powershell command 
+python -c "import secrets; print(secrets.token_hex(32))"
+
+powershell
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+
+
+Set them as environment variables in the current venv PowerShell session
+Replace the sample outputs below with the strings the Python commands produced:
+
+powershell
+$env:SECRET_KEY = "PASTE_FIRST_GENERATED_KEY_HERE"
+$env:JWT_SECRET_KEY = "PASTE_SECOND_GENERATED_KEY_HERE"
+Verify:
+
+powershell
+echo $env:SECRET_KEY
+echo $env:JWT_SECRET_KEY
+ 
+
+```
+
+For the gmail pass key .
 MAIL_PASSWORD must be a Gmail App Password (enable 2-Step Verification → create App Password).
 
-Return to the project root:
+Return to the project and add it in the .env folder of backend e.g : MAIL_PASSWORD= 16_digit pass key
 
-bash
+```bash
 
-cd ..
 2.4 Initialise database & create Super Admin
-bash
 
 flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade
-flask create-super-admin
-2.5 Run the backend server
-bash
+flask create-super-admin 
 
+```
+2.5 Run the backend server
+
+```bash
 flask run --host 0.0.0.0 --port 5000 --debug
 API is now live at http://localhost:5000.
+
+```
 
 3 ▪ Frontend Setup (Next.js)
 Open a new terminal window:
 
-bash
+```bash
 
 cd frontend
 npm install
 npm run dev
+```
+
 Frontend is served at http://localhost:3000.
 
 You now have:
